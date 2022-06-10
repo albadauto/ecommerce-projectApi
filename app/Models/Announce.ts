@@ -17,6 +17,9 @@ export default class Announce extends BaseModel {
   @column()
   public photo: string;
 
+  @column()
+  public type: string;
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
