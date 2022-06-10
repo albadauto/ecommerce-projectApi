@@ -8,7 +8,7 @@ export default class UsersController {
             const insert = request.body();
             if (insert){
                 await User.create(insert);
-                return response.status(400).json({
+                return response.status(200).json({
                     created: true,
                     message: "Usuário Registrado! bem vindo(a) ao sistema!"
                 })
