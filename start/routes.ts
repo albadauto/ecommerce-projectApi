@@ -31,7 +31,9 @@ Route.group(() => {
     Route.post("/specialRoute", "UsersController.specialRoute");
   }).prefix("/user")
 
-  Route.resource("/announce", "AnnouncesController").apiOnly();
+  Route.group(() => {
+    Route.resource("/announce", "AnnouncesController").apiOnly();
+  }).middleware("auth");
 
 }).prefix("/api")
 
