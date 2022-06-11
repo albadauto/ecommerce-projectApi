@@ -10,7 +10,7 @@ export default class AuthController {
                 token
             })
         } catch {
-           return response.json({
+           return response.status(400).json({
                 auth:false,
                 message:"Invalid Credentials"
             })
