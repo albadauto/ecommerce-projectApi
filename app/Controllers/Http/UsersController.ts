@@ -28,7 +28,7 @@ export default class UsersController {
             const insert = request.body();
             await User.create(insert);
             return response.json({
-                message: "shhhh, welcome roottt",
+                message: "shhhh, welcome rootttttt",
                 created: true
             })
         } catch (err) {
