@@ -28,8 +28,8 @@ export default class AnnouncesController {
                     message: "Não foi encontrado nenhum registro de anúncio!"
                 })
             }
-        } catch {
-            console.log("Deu erro!");
+        } catch(err) {
+            throw new Error(err);
         }
     }
 
@@ -47,8 +47,10 @@ export default class AnnouncesController {
                     message: "Anúncio não encontrado."
                 })
             }
-        } catch {
-            console.log("Deu erro!");
+        } catch(err) {
+            throw new Error(err);
         }
     }
+
+   
 }
