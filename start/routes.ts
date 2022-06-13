@@ -29,6 +29,8 @@ Route.group(() => {
     Route.post("/insertNewUser", "UsersController.insertUser");
     Route.post("/login", "AuthController.login");
     Route.post("/specialRoute", "UsersController.specialRoute");
+    Route.post("/recover/:id", "UsersController.updatePassword");
+    Route.post("/recoverPass/:id", "UsersController.recoverPass");
   }).prefix("/user")
 
   Route.group(() => {
