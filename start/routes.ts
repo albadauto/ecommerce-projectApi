@@ -30,7 +30,8 @@ Route.group(() => {
     Route.post("/login", "AuthController.login");
     Route.post("/specialRoute", "UsersController.specialRoute");
     Route.post("/recover/:id", "UsersController.updatePassword");
-    Route.post("/recoverPass/:id", "UsersController.recoverPass");
+    Route.post("/recoverPass", "UsersController.recoverPass");
+    Route.post("/findByEmail", "UsersController.findUserByEmail");
   }).prefix("/user")
 
   Route.group(() => {
