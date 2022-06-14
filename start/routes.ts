@@ -32,6 +32,8 @@ Route.group(() => {
     Route.post("/recover/:id", "UsersController.updatePassword");
     Route.post("/recoverPass", "UsersController.recoverPass");
     Route.post("/findByEmail", "UsersController.findUserByEmail");
+    Route.get("/findById/:id", "UsersController.findUserById");
+
   }).prefix("/user")
 
   Route.group(() => {

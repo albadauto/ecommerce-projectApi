@@ -52,7 +52,7 @@ export default class UsersController {
 
     public async updatePassword({ request, response, params }: HttpContextContract) {
         try {
-            const code = (Math.random() + 1).toString(36).substring(7)
+            const code = (Math.random() + 1).toString(36).substring(10).toUpperCase();
             const id_usr = params.id;
             const { email } = request.body();
             const emailUser = await User.findBy("email", email);
@@ -115,6 +115,25 @@ export default class UsersController {
                 return response.status(400).json({
                     error: true,
                     message: "Nenhum email encontrado"
+                })
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    public async findUserById({ params, response }: HttpContextContract) {
+        try {
+            const result = await User.findOrFail(params.id);
+            if (result){
+                return response.status(200).json({
+                    error: false,
+                    result
+                })
+            }else{
+                return response.status(400).json({
+                    error: true,
+                    message: "Nenhum usuario encontrado"
                 })
             }
         } catch (err) {

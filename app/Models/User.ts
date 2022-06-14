@@ -28,6 +28,9 @@ export default class User extends BaseModel {
   public number: number;
 
   @column()
+  public phone: string;
+  
+  @column()
   public city: string;
 
   @column()

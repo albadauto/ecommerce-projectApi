@@ -52,5 +52,21 @@ export default class AnnouncesController {
         }
     }
 
+    // public async show({params, response}: HttpContextContract){
+    //     try{
+    //         const result = await Announce.findOrFail(params.id);
+    //         if(result){
+    //             return response.status(200).json({
+    //                 result
+    //             })
+    //         }else{
+    //             return response.status(400).json({
+    //                 message:"Não foi encontrado esse anuncio"
+    //             })
+    //         }
+    //     }catch(err){    
+    //         console.log(err);
+    //     }
+    // }
    
 }
