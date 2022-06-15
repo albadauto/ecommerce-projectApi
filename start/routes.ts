@@ -34,10 +34,12 @@ Route.group(() => {
     Route.post("/findByEmail", "UsersController.findUserByEmail");
     Route.get("/findById/:id", "UsersController.findUserById");
 
+
   }).prefix("/user")
 
   Route.group(() => {
     Route.resource("/announce", "AnnouncesController").apiOnly();
+    Route.post("/testImage", "AnnouncesController.testImage");
   }).middleware("auth");
 
 }).prefix("/api")

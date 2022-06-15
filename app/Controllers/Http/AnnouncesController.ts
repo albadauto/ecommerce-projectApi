@@ -1,11 +1,17 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Announce from 'App/Models/Announce';
-
+import Application from "@ioc:Adonis/Core/Application";
+import uuid from "react-uuid";
 export default class AnnouncesController {
+    private validationOptions = {
+        types: ['image'],
+        size: '2mb'
+    } 
     public async store({ request, response }: HttpContextContract) {
         try {
-            const { name, description, photo, type } = request.body();
-            await Announce.create({ name, description, photo, type });
+            const { name, description, type } = request.body();
+            await Announce.create({ name, description,  type });
+            
             return response.status(200).json({
                 created: true,
                 message: "Anúncio criado com sucesso!"
@@ -68,5 +74,18 @@ export default class AnnouncesController {
     //         console.log(err);
     //     }
     // }
+
+    public async testImage({request}: HttpContextContract){
+        try{
+            const cover_image = request.file('cover_image');
+            if(cover_image){
+                cover_image.fileName = `${uuid()}.${cover_image.extname}`;
+                await cover_image.move(Application.tmpPath("uploads"), {name:cover_image.fileName});
+                console.log("Feito!")
+            }
+        }catch(err){
+            console.log(err);
+        }
+    }
    
 }
