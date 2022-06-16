@@ -6,12 +6,18 @@ export default class AnnouncesController {
     private validationOptions = {
         types: ['image'],
         size: '2mb'
-    } 
+    }
     public async store({ request, response }: HttpContextContract) {
         try {
             const { name, description, type } = request.body();
-            await Announce.create({ name, description,  type });
-            
+            const image = request.file("photo");
+            var photo: string;
+            if (image) {
+                image.fileName = `${uuid()}.${image.extname}`;
+                photo = Application.tmpPath("uploads") + `/${image.fileName}`;
+                await image.move(Application.tmpPath("uploads"), { name: image.fileName });
+                await Announce.create({ name, photo ,description, type });
+            }
             return response.status(200).json({
                 created: true,
                 message: "Anúncio criado com sucesso!"
@@ -34,7 +40,7 @@ export default class AnnouncesController {
                     message: "Não foi encontrado nenhum registro de anúncio!"
                 })
             }
-        } catch(err) {
+        } catch (err) {
             throw new Error(err);
         }
     }
@@ -42,50 +48,50 @@ export default class AnnouncesController {
     public async destroy({ params, response }: HttpContextContract) {
         try {
             const result = await Announce.findOrFail(params.id);
-            if (result){
+            if (result) {
                 await result.delete();
                 return response.status(200).json({
                     deleted: true
                 })
-            }else{
+            } else {
                 return response.status(400).json({
                     deleted: false,
                     message: "Anúncio não encontrado."
                 })
             }
-        } catch(err) {
+        } catch (err) {
             throw new Error(err);
         }
     }
 
-    // public async show({params, response}: HttpContextContract){
-    //     try{
-    //         const result = await Announce.findOrFail(params.id);
-    //         if(result){
-    //             return response.status(200).json({
-    //                 result
-    //             })
-    //         }else{
-    //             return response.status(400).json({
-    //                 message:"Não foi encontrado esse anuncio"
-    //             })
-    //         }
-    //     }catch(err){    
-    //         console.log(err);
-    //     }
-    // }
-
-    public async testImage({request}: HttpContextContract){
+    public async show({params, response}: HttpContextContract){
         try{
-            const cover_image = request.file('cover_image');
-            if(cover_image){
-                cover_image.fileName = `${uuid()}.${cover_image.extname}`;
-                await cover_image.move(Application.tmpPath("uploads"), {name:cover_image.fileName});
-                console.log("Feito!")
+            const result = await Announce.findOrFail(params.id);
+            if(result){
+                return response.status(200).json({
+                    result
+                })
+            }else{
+                return response.status(400).json({
+                    message:"Não foi encontrado esse anuncio"
+                })
             }
-        }catch(err){
+        }catch(err){    
             console.log(err);
         }
     }
-   
+
+    public async testImage({ request }: HttpContextContract) {
+        try {
+            const cover_image = request.file('cover_image');
+            if (cover_image) {
+                cover_image.fileName = `${uuid()}.${cover_image.extname}`;
+                await cover_image.move(Application.tmpPath("uploads"), { name: cover_image.fileName });
+                console.log("Feito!")
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 }
