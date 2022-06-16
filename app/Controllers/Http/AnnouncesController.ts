@@ -9,14 +9,14 @@ export default class AnnouncesController {
     }
     public async store({ request, response }: HttpContextContract) {
         try {
-            const { name, description, type } = request.body();
-            const image = request.file("photo");
+            const { name, description, type, id_user } = request.body();
+            const image = request.file("photo", this.validationOptions);
             var photo: string;
             if (image) {
                 image.fileName = `${uuid()}.${image.extname}`;
                 photo = Application.tmpPath("uploads") + `/${image.fileName}`;
                 await image.move(Application.tmpPath("uploads"), { name: image.fileName });
-                await Announce.create({ name, photo ,description, type });
+                await Announce.create({ name, photo ,description, type, id_user });
             }
             return response.status(200).json({
                 created: true,
