@@ -2,6 +2,8 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Announce from 'App/Models/Announce';
 import Application from "@ioc:Adonis/Core/Application";
 import uuid from "react-uuid";
+import Database from "@ioc:Adonis/Lucid/Database";
+
 export default class AnnouncesController {
     private validationOptions = {
         types: ['image'],
@@ -14,9 +16,9 @@ export default class AnnouncesController {
             var photo: string;
             if (image) {
                 image.fileName = `${uuid()}.${image.extname}`;
-                photo = Application.tmpPath("uploads") + `/${image.fileName}`;
+                photo = "uploads" + `/${image.fileName}`;
                 await image.move(Application.tmpPath("uploads"), { name: image.fileName });
-                await Announce.create({ name, photo ,description, type, id_user });
+                await Announce.create({ name, photo, description, type, id_user });
             }
             return response.status(200).json({
                 created: true,
@@ -64,31 +66,39 @@ export default class AnnouncesController {
         }
     }
 
-    public async show({params, response}: HttpContextContract){
-        try{
+    public async show({ params, response }: HttpContextContract) {
+        try {
             const result = await Announce.findOrFail(params.id);
-            if(result){
+            if (result) {
                 return response.status(200).json({
                     result
                 })
-            }else{
+            } else {
                 return response.status(400).json({
-                    message:"Não foi encontrado esse anuncio"
+                    message: "Não foi encontrado esse anuncio"
                 })
             }
-        }catch(err){    
+        } catch (err) {
             console.log(err);
         }
     }
 
-    public async testImage({ request }: HttpContextContract) {
+    public async findAllAnnounces({ request, response }: HttpContextContract) {
         try {
-            const cover_image = request.file('cover_image');
-            if (cover_image) {
-                cover_image.fileName = `${uuid()}.${cover_image.extname}`;
-                await cover_image.move(Application.tmpPath("uploads"), { name: cover_image.fileName });
-                console.log("Feito!")
+            const result = await Database.from("announces as a")
+                            .join("users as u", "a.id_user","u.id")
+            if (result.length > 0){
+                return response.status(200).json({
+                    error:false,
+                    result
+                })
+            }else{
+                return response.status(400).json({
+                    error: true,
+                    message:"Não tem anúncios disponiveis!"
+                })
             }
+
         } catch (err) {
             console.log(err);
         }

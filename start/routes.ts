@@ -39,7 +39,7 @@ Route.group(() => {
 
   Route.group(() => {
     Route.resource("/announce", "AnnouncesController").apiOnly();
-    Route.post("/testImage", "AnnouncesController.testImage");
+    Route.get("/findAllAnnounces", "AnnouncesController.findAllAnnounces");
   }).middleware("auth");
 
 }).prefix("/api")
