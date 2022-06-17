@@ -86,8 +86,8 @@ export default class AnnouncesController {
     public async findAllAnnounces({ request, response }: HttpContextContract) {
         try {
             const result = await Database.from("announces as a")
-                            .join("users as u", "a.id_user","u.id")
-            if (result.length > 0){
+                            .join("users as u", "a.id_user","u.id") 
+            if (result){
                 return response.status(200).json({
                     error:false,
                     result
