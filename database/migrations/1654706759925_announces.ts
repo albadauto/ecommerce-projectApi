@@ -11,6 +11,7 @@ export default class extends BaseSchema {
       table.string("description", 512);
       table.integer("id_user").unsigned().references("id").inTable("users").onDelete("CASCADE");
       table.string("photo", 255);
+      table.float("price");
       table.string("type", 150)
 
       /**

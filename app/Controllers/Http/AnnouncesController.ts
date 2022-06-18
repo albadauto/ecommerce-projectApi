@@ -11,14 +11,14 @@ export default class AnnouncesController {
     }
     public async store({ request, response }: HttpContextContract) {
         try {
-            const { name, description, type, id_user } = request.body();
+            const { name, description, type, id_user, price } = request.body();
             const image = request.file("photo", this.validationOptions);
             var photo: string;
             if (image) {
                 image.fileName = `${uuid()}.${image.extname}`;
                 photo = "uploads" + `/${image.fileName}`;
                 await image.move(Application.tmpPath("uploads"), { name: image.fileName });
-                await Announce.create({ name, photo, description, type, id_user });
+                await Announce.create({ name, photo, description, type, id_user, price });
             }
             return response.status(200).json({
                 created: true,
@@ -87,6 +87,7 @@ export default class AnnouncesController {
         try {
             const result = await Database.from("announces as a")
                             .join("users as u", "a.id_user","u.id") 
+                            
             if (result){
                 return response.status(200).json({
                     error:false,
