@@ -68,7 +68,12 @@ export default class AnnouncesController {
 
     public async show({ params, response }: HttpContextContract) {
         try {
-            const result = await Announce.findOrFail(params.id);
+            const result = await Database.from("announces")
+                .join("users", "announces.id_user", "users.id")
+                .select("announces.*")
+                .select("users.*")
+                .orderBy("announces.id", "desc")
+                .where("announces.id", params.id)
             if (result) {
                 return response.status(200).json({
                     result
@@ -86,9 +91,10 @@ export default class AnnouncesController {
     public async findAllAnnounces({ request, response }: HttpContextContract) {
         try {
             const result = await Database.from("announces")
-                                .join("users", "announces.id_user", "users.id")
-                                .select("announces.*")
-                                .orderBy("announces.id", "desc")
+                .join("users", "announces.id_user", "users.id")
+                .select("users.*")
+                .select("announces.*")
+                .orderBy("announces.id", "desc")
 
             if (result) {
                 return response.status(200).json({
