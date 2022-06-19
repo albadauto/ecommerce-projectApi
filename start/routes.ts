@@ -41,6 +41,8 @@ Route.group(() => {
     Route.resource("/announce", "AnnouncesController").apiOnly();
   }).middleware("auth");
   Route.get("/findAllAnnounces", "AnnouncesController.findAllAnnounces");
+  Route.get("/allAnnouncesByUser/:id", "AnnouncesController.allAnnouncesByUser");
+
 
 }).prefix("/api")
 
