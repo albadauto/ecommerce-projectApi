@@ -85,20 +85,20 @@ export default class AnnouncesController {
 
     public async findAllAnnounces({ request, response }: HttpContextContract) {
         try {
-            const result = await Database.from("announces as a")
-                            .select("*")
-                            .join("users as u", "a.id_user","u.id") 
-                            .orderBy("a.id", "desc")
-                            
-            if (result){
+            const result = await Database.from("announces")
+                                .join("users", "announces.id_user", "users.id")
+                                .select("announces.*")
+                                .orderBy("announces.id", "desc")
+
+            if (result) {
                 return response.status(200).json({
-                    error:false,
+                    error: false,
                     result
                 })
-            }else{
+            } else {
                 return response.status(400).json({
                     error: true,
-                    message:"Não tem anúncios disponiveis!"
+                    message: "Não tem anúncios disponiveis!"
                 })
             }
 
@@ -107,23 +107,23 @@ export default class AnnouncesController {
         }
     }
 
-    public async allAnnouncesByUser({request, response, params}: HttpContextContract){
-        try{
+    public async allAnnouncesByUser({ request, response, params }: HttpContextContract) {
+        try {
             const result = await Database.from("announces")
-                                 .where("id_user", params.id)
-                                 .select("*")
-            if (result){
+                .where("id_user", params.id)
+                .select("*")
+            if (result) {
                 return response.status(200).json({
-                    error:false,
+                    error: false,
                     result
                 })
-            }else{
+            } else {
                 return response.status(400).json({
                     error: true,
-                    message:"Não tem anúncios disponiveis!"
+                    message: "Não tem anúncios disponiveis!"
                 })
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     }
