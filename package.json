@@ -8,7 +8,7 @@
     "start": "ENV_SILENT=true node server.js"
   },
   "engines": {
-    "node": "16.x"
+    "node": "16.15.1"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^5.7.0",
